@@ -5,7 +5,7 @@ import { cameras } from '$lib/data/surveillance.js';
 export const networkData = writable([...networkDevices]);
 export const camData = writable([...cameras]);
 export const activeTab = writable('overview');
-export const siteFilter = writable('All Sites');
+export const siteFilter = writable([]);
 export const searchQuery = writable('');
 export const sortColumn = writable(null);
 export const sortDirection = writable('asc');
@@ -19,8 +19,8 @@ export const filteredNetwork = derived(
   ([$networkData, $siteFilter, $searchQuery, $statusFilter, $sortColumn, $sortDirection]) => {
     let result = $networkData;
 
-    if ($siteFilter !== 'All Sites') {
-      result = result.filter(d => d.site === $siteFilter);
+    if ($siteFilter.length > 0) {
+      result = result.filter(d => $siteFilter.includes(d.site));
     }
 
     if ($statusFilter !== 'all') {
@@ -53,8 +53,8 @@ export const filteredCams = derived(
   ([$camData, $siteFilter, $searchQuery, $camStatusFilter, $aiFilter]) => {
     let result = $camData;
 
-    if ($siteFilter !== 'All Sites') {
-      result = result.filter(c => c.location === $siteFilter);
+    if ($siteFilter.length > 0) {
+      result = result.filter(c => $siteFilter.includes(c.location));
     }
 
     if ($camStatusFilter !== 'all') {

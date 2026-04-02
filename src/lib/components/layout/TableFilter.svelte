@@ -1,38 +1,43 @@
 <script>
+  import CustomSelect from '../common/CustomSelect.svelte';
   import { siteFilter, searchQuery, statusFilter, camStatusFilter, aiFilter } from '$lib/stores/index.js';
-  import { SITE_NAMES } from '$lib/utils/constants.js';
+  import { SITES } from '$lib/utils/constants.js';
 
   export let showStatus = false;
   export let showCamStatus = false;
   export let showAi = false;
+
+  const siteOptions = SITES.map(s => ({ value: s, label: s }));
+
+  const networkStatusOptions = [
+    { value: 'all', label: 'All Status' },
+    { value: 'up', label: 'Up', dot: '#39ff14' },
+    { value: 'down', label: 'Down', dot: '#ff3d3d' }
+  ];
+
+  const camStatusOptions = [
+    { value: 'all', label: 'All Status' },
+    { value: 'active', label: 'Active', dot: '#00e5ff' },
+    { value: 'inactive', label: 'Inactive', dot: '#3d4f6a' }
+  ];
+
+  const aiOptions = [
+    { value: 'all', label: 'All AI' },
+    { value: 'enabled', label: 'AI On', dot: '#b388ff' },
+    { value: 'disabled', label: 'AI Off', dot: '#3d4f6a' }
+  ];
 </script>
 
 <div class="table-filter">
-  <select class="filter-select" bind:value={$siteFilter}>
-    {#each SITE_NAMES as site}
-      <option value={site}>{site}</option>
-    {/each}
-  </select>
+  <CustomSelect bind:value={$siteFilter} options={siteOptions} placeholder="All Sites" multiple={true} />
   {#if showStatus}
-    <select class="filter-select" bind:value={$statusFilter}>
-      <option value="all">All Status</option>
-      <option value="up">Up</option>
-      <option value="down">Down</option>
-    </select>
+    <CustomSelect bind:value={$statusFilter} options={networkStatusOptions} placeholder="All Status" />
   {/if}
   {#if showCamStatus}
-    <select class="filter-select" bind:value={$camStatusFilter}>
-      <option value="all">All Status</option>
-      <option value="active">Active</option>
-      <option value="inactive">Inactive</option>
-    </select>
+    <CustomSelect bind:value={$camStatusFilter} options={camStatusOptions} placeholder="All Status" />
   {/if}
   {#if showAi}
-    <select class="filter-select" bind:value={$aiFilter}>
-      <option value="all">All AI</option>
-      <option value="enabled">AI On</option>
-      <option value="disabled">AI Off</option>
-    </select>
+    <CustomSelect bind:value={$aiFilter} options={aiOptions} placeholder="All AI" />
   {/if}
   <input
     class="search-input"
@@ -50,7 +55,6 @@
     padding: 0 24px;
   }
 
-  .filter-select,
   .search-input {
     font-family: var(--font-mono);
     font-size: 12px;
@@ -61,24 +65,16 @@
     color: var(--text-primary);
     outline: none;
     transition: border-color 0.2s;
+    width: 180px;
   }
 
-  .filter-select:focus,
   .search-input:focus {
     border-color: rgba(0, 229, 255, 0.3);
-  }
-
-  .search-input {
-    width: 180px;
+    box-shadow: 0 0 8px rgba(0, 229, 255, 0.08);
   }
 
   .search-input::placeholder {
     color: var(--text-muted);
-  }
-
-  select option {
-    background: #0f1520;
-    color: var(--text-primary);
   }
 
   @media (max-width: 600px) {
@@ -87,7 +83,6 @@
       flex-direction: column;
     }
 
-    .filter-select,
     .search-input {
       width: 100%;
     }
