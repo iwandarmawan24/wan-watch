@@ -5,7 +5,9 @@
   import TableFilter from '$lib/components/layout/TableFilter.svelte';
   import SummaryGrid from '$lib/components/cards/SummaryGrid.svelte';
   import NetworkCharts from '$lib/components/charts/NetworkCharts.svelte';
+  import NetworkDetailCharts from '$lib/components/charts/NetworkDetailCharts.svelte';
   import SurveillanceCharts from '$lib/components/charts/SurveillanceCharts.svelte';
+  import SurveillanceDetailCharts from '$lib/components/charts/SurveillanceDetailCharts.svelte';
   import NetworkTable from '$lib/components/tables/NetworkTable.svelte';
   import SurveillanceTable from '$lib/components/tables/SurveillanceTable.svelte';
   import { networkData, camData, activeTab, rtPulse } from '$lib/stores/index.js';
@@ -44,6 +46,9 @@
         <h2 class="section-title">Network Monitoring</h2>
         <NetworkCharts />
         {#if showNetworkTable}
+          <NetworkDetailCharts />
+        {/if}
+        {#if showNetworkTable}
           <div class="spacer"></div>
           <TableFilter showStatus={true} />
           <NetworkTable />
@@ -55,6 +60,9 @@
       <section class="section">
         <h2 class="section-title">Surveillance Monitoring</h2>
         <SurveillanceCharts />
+        {#if showSurveillanceTable}
+          <SurveillanceDetailCharts />
+        {/if}
         {#if showSurveillanceTable}
           <div class="spacer"></div>
           <TableFilter showCamStatus={true} showAi={true} />
