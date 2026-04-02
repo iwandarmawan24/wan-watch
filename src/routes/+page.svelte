@@ -45,7 +45,7 @@
         <NetworkCharts />
         {#if showNetworkTable}
           <div class="spacer"></div>
-          <TableFilter />
+          <TableFilter showStatus={true} />
           <NetworkTable />
         {/if}
       </section>
@@ -57,7 +57,7 @@
         <SurveillanceCharts />
         {#if showSurveillanceTable}
           <div class="spacer"></div>
-          <TableFilter />
+          <TableFilter showCamStatus={true} showAi={true} />
           <SurveillanceTable />
         {/if}
       </section>

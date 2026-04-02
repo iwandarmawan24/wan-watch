@@ -1,14 +1,39 @@
 <script>
-  import { siteFilter, searchQuery } from '$lib/stores/index.js';
+  import { siteFilter, searchQuery, statusFilter, camStatusFilter, aiFilter } from '$lib/stores/index.js';
   import { SITE_NAMES } from '$lib/utils/constants.js';
+
+  export let showStatus = false;
+  export let showCamStatus = false;
+  export let showAi = false;
 </script>
 
 <div class="table-filter">
-  <select class="site-select" bind:value={$siteFilter}>
+  <select class="filter-select" bind:value={$siteFilter}>
     {#each SITE_NAMES as site}
       <option value={site}>{site}</option>
     {/each}
   </select>
+  {#if showStatus}
+    <select class="filter-select" bind:value={$statusFilter}>
+      <option value="all">All Status</option>
+      <option value="up">Up</option>
+      <option value="down">Down</option>
+    </select>
+  {/if}
+  {#if showCamStatus}
+    <select class="filter-select" bind:value={$camStatusFilter}>
+      <option value="all">All Status</option>
+      <option value="active">Active</option>
+      <option value="inactive">Inactive</option>
+    </select>
+  {/if}
+  {#if showAi}
+    <select class="filter-select" bind:value={$aiFilter}>
+      <option value="all">All AI</option>
+      <option value="enabled">AI On</option>
+      <option value="disabled">AI Off</option>
+    </select>
+  {/if}
   <input
     class="search-input"
     type="text"
@@ -25,7 +50,7 @@
     padding: 0 24px;
   }
 
-  .site-select,
+  .filter-select,
   .search-input {
     font-family: var(--font-mono);
     font-size: 12px;
@@ -38,7 +63,7 @@
     transition: border-color 0.2s;
   }
 
-  .site-select:focus,
+  .filter-select:focus,
   .search-input:focus {
     border-color: rgba(0, 229, 255, 0.3);
   }
@@ -62,7 +87,7 @@
       flex-direction: column;
     }
 
-    .site-select,
+    .filter-select,
     .search-input {
       width: 100%;
     }

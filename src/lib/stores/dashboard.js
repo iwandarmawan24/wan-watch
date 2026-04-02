@@ -9,15 +9,22 @@ export const siteFilter = writable('All Sites');
 export const searchQuery = writable('');
 export const sortColumn = writable(null);
 export const sortDirection = writable('asc');
+export const statusFilter = writable('all');
+export const camStatusFilter = writable('all');
+export const aiFilter = writable('all');
 export const rtPulse = writable(false);
 
 export const filteredNetwork = derived(
-  [networkData, siteFilter, searchQuery, sortColumn, sortDirection],
-  ([$networkData, $siteFilter, $searchQuery, $sortColumn, $sortDirection]) => {
+  [networkData, siteFilter, searchQuery, statusFilter, sortColumn, sortDirection],
+  ([$networkData, $siteFilter, $searchQuery, $statusFilter, $sortColumn, $sortDirection]) => {
     let result = $networkData;
 
     if ($siteFilter !== 'All Sites') {
       result = result.filter(d => d.site === $siteFilter);
+    }
+
+    if ($statusFilter !== 'all') {
+      result = result.filter(d => d.status === $statusFilter);
     }
 
     if ($searchQuery) {
@@ -42,12 +49,20 @@ export const filteredNetwork = derived(
 );
 
 export const filteredCams = derived(
-  [camData, siteFilter, searchQuery],
-  ([$camData, $siteFilter, $searchQuery]) => {
+  [camData, siteFilter, searchQuery, camStatusFilter, aiFilter],
+  ([$camData, $siteFilter, $searchQuery, $camStatusFilter, $aiFilter]) => {
     let result = $camData;
 
     if ($siteFilter !== 'All Sites') {
       result = result.filter(c => c.location === $siteFilter);
+    }
+
+    if ($camStatusFilter !== 'all') {
+      result = result.filter(c => c.status === $camStatusFilter);
+    }
+
+    if ($aiFilter !== 'all') {
+      result = result.filter(c => $aiFilter === 'enabled' ? c.aiEnabled : !c.aiEnabled);
     }
 
     if ($searchQuery) {
